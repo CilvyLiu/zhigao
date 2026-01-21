@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Traveling Light Lyrics</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background: #fdf6e3;
+    color: #333;
+    line-height: 1.6;
+  }
+  .lyrics {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .word {
+    font-weight: bold;
+    color: #2a7ae2;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .word:hover {
+    color: #1d4f9c;
+  }
+  #audio-player {
+    display: block;
+    margin: 20px auto;
+  }
+  #dictionary {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 10px;
+    max-width: 300px;
+    display: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  #dictionary button {
+    margin-top: 10px;
+    padding: 5px 10px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Traveling Light Lyrics</h1>
+
+<div class="lyrics" id="lyrics"></div>
+
+<audio id="audio-player" controls>
+  <source src="Travel.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<div id="dictionary">
+  <div id="dict-word"></div>
+  <div id="dict-meaning"></div>
+  <button onclick="speakWord()">🔊 Listen</button>
+  <button onclick="closeDict()">✖ Close</button>
+</div>
+
+<script>
+// 47 target words
+const words = ["travel","trip","tour","journey","voyage","vacation","prepare","passport","embassy","exit","entry","administration","ministry","security","visa","apply","issue","authority","luggage","baggage","agency","reserve","inn","accommodation","dormitory","residence","escalator","elevator","lobby","reception","laundry","departure","check","destination","attraction","heritage","museum","gallery","cathedral","souvenir","scenic","pleasant","attractive","fascinating","marvelous","picturesque","magnificent"];
+
+// Lyrics text
+const lyricsText = `
+I pack my luggage, check my baggage
+Prepare my passport, visit the embassy
+Apply for a visa, wait for authority
+The ministry, the administration, issue guidance for me
+
+Exit through the door, entry to the skies
+A journey, a voyage, a trip I can't disguise
+Reserve an inn, a dormitory, or a residence
+Every accommodation holds a warm presence
+
+Travel, travel, on a scenic way
+Marvelous sights greet each day
+Picturesque cathedrals, galleries, museums
+Fascinating attractions, heritage in bloom
+Pleasant and attractive, marvelous and bright
+Traveling light, hearts take flight tonight
+
+Escalator or elevator, up to the lobby
+Reception smiles, laundry done promptly
+Departure calls, we check and we roam
+Each destination feels like home
+
+Souvenirs in hand, memories to keep
+A tour, a journey, a voyage so deep
+Vacation moments, fascinating and free
+Every marvel a story, for you and me
+
+Travel, travel, on a scenic way
+Marvelous sights greet each day
+Picturesque cathedrals, galleries, museums
+Fascinating attractions, heritage in bloom
+Pleasant and attractive, marvelous and bright
+Traveling light, hearts take flight tonight
+
+Prepare for the unknown, every trip's a delight
+Authority and security, guiding us right
+From agency to inn, through every check
+Our voyage is a song we won't forget
+
+Travel, travel, on a scenic way
+Marvelous sights greet each day
+Picturesque cathedrals, galleries, museums
+Fascinating attractions, heritage in bloom
+Pleasant and attractive, marvelous and bright
+Traveling light, hearts take flight tonight
+
+Travel light, carry love, not just baggage
+Each journey, each trip, turns into a passage
+From magnificent views to memories we store
+Travel, voyage, adventure, forevermore
+`;
+
+// Function to highlight words
+function highlightLyrics(text) {
+  let regex = new RegExp(`\\b(${words.join("|")})\\b`, "gi");
+  return text.replace(regex, '<span class="word" onclick="showDict(\'$&\')">$&</span>').replace(/\n/g,'<br>');
+}
+
+// Render lyrics
+document.getElementById('lyrics').innerHTML = highlightLyrics(lyricsText);
+
+// Dictionary popup (using simple demo definitions)
+function showDict(word) {
+  const meanings = {
+    travel: "to go from one place to another",
+    trip: "a journey or excursion",
+    tour: "a journey for pleasure in which several different places are visited",
+    journey: "the act of traveling from one place to another",
+    voyage: "a long journey involving travel by sea or in space",
+    vacation: "a period of time spent away from home or work",
+    prepare: "make ready for use or consideration",
+    passport: "official document permitting travel to foreign countries",
+    embassy: "a diplomatic mission in a foreign country",
+    exit: "a way out",
+    entry: "the act of going in",
+    administration: "management of affairs",
+    ministry: "government department",
+    security: "safety measures",
+    visa: "official document permitting entry",
+    apply: "make a formal request",
+    issue: "an important topic or problem; also to formally give",
+    authority: "power or right to give orders",
+    luggage: "suitcases or bags",
+    baggage: "personal belongings packed for travel",
+    agency: "a business providing a service",
+    reserve: "to book in advance",
+    inn: "a small hotel",
+    accommodation: "place to stay",
+    dormitory: "sleeping quarters in a school or institution",
+    residence: "a place where someone lives",
+    escalator: "moving staircase",
+    elevator: "lift to move between floors",
+    lobby: "entrance hall",
+    reception: "front desk or greeting area",
+    laundry: "place to wash clothes",
+    departure: "the act of leaving",
+    check: "to examine or inspect",
+    destination: "the place you are going",
+    attraction: "something interesting to see",
+    heritage: "traditions or culture passed down",
+    museum: "place where objects are exhibited",
+    gallery: "place for art display",
+    cathedral: "large Christian church",
+    souvenir: "a keepsake from a trip",
+    scenic: "providing beautiful views",
+    pleasant: "giving a sense of enjoyment",
+    attractive: "pleasing to look at",
+    fascinating: "extremely interesting",
+    marvelous: "causing wonder",
+    picturesque: "visually charming",
+    magnificent: "grand or splendid"
+  };
+  document.getElementById('dict-word').textContent = word;
+  document.getElementById('dict-meaning').textContent = meanings[word.toLowerCase()] || "No definition found";
+  document.getElementById('dictionary').style.display = 'block';
+}
+
+// Close dictionary
+function closeDict() {
+  document.getElementById('dictionary').style.display = 'none';
+}
+
+// TTS for the word
+function speakWord() {
+  const word = document.getElementById('dict-word').textContent;
+  if ('speechSynthesis' in window) {
+    const utterance = new SpeechSynthesisUtterance(word);
+    window.speechSynthesis.speak(utterance);
+  } else {
+    alert("TTS not supported in this browser.");
+  }
+}
+</script>
+
+</body>
+</html>
