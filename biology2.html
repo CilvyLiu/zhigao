@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IGCSE Biology Song</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f2f5;
+        margin: 0;
+        padding: 0;
+    }
+    header {
+        width: 100%;
+        height: 200px;
+        background: url('banner1.jpg') center/cover no-repeat;
+    }
+    .player {
+        text-align: center;
+        margin: 20px 0;
+    }
+    audio {
+        width: 90%;
+    }
+    .lyrics-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        padding: 20px;
+    }
+    .lyric-card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        padding: 15px 20px;
+        min-width: 200px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    .lyric-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+    .lyric-card b {
+        color: #2a9d8f;
+    }
+    .controls {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .control-btn {
+        background: #264653;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    .control-btn:hover {
+        background: #1b2d3b;
+    }
+</style>
+</head>
+<body>
+
+<header></header>
+
+<div class="player">
+    <audio controls>
+        <source src="biology2.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</div>
+
+<div class="lyrics-container" id="lyricsContainer">
+    <!-- Lyrics cards will be generated here -->
+</div>
+
+<script>
+const lyrics = [
+    "Yo! Let’s go", "生物派对开场", 
+    "单细胞", "Unicellular", 
+    "变化 show", "Metamorphosis", 
+    "耳廓 listen", "Pinna", 
+    "Placenta", "胎盘", 
+    "Mammary glands", "乳腺",
+    "横膈膜", "Diaphragm", 
+    "节肢动物", "Arthropod", 
+    "外骨骼", "Exoskeleton", 
+    "陆生", "Terrestrial", 
+    "水生", "Aquatic",
+    "退化", "Vestigial",
+    "双子叶", "Dicotyledons",
+    "单子叶", "Monocotyledons",
+    "细胞膜", "Cell membrane",
+    "半透", "Partially permeable",
+    "细胞壁", "Cell wall",
+    "全透", "Fully permeable",
+    "细胞质", "Cytoplasm",
+    "代谢反应", "Metabolic reactions",
+    "液泡", "Vacuole",
+    "细胞液", "Cell sap",
+    "小泡", "Vesicle",
+    "细胞核", "Nucleus",
+    "染色体", "Chromosome",
+    "DNA", "脱氧核糖核酸",
+    "叶绿体", "Chloroplast",
+    "淀粉粒", "Starch grains",
+    "线粒体", "Mitochondrion",
+    "有氧呼吸", "Aerobic respiration",
+    "核糖体", "Ribosome",
+    "细菌", "Bacteria",
+    "原核细胞", "Prokaryotic cell",
+    "质粒", "Plasmid",
+    "组织", "Tissue"
+];
+
+// Function to create lyric cards
+const lyricsContainer = document.getElementById('lyricsContainer');
+
+lyrics.forEach(text => {
+    const card = document.createElement('div');
+    card.className = 'lyric-card';
+    card.innerHTML = `<b>${text}</b>`;
+    
+    // Click to TTS
+    card.addEventListener('click', () => {
+        const utterance = new SpeechSynthesisUtterance(text);
+        // detect language: simple check
+        utterance.lang = /[a-zA-Z]/.test(text) ? 'en-US' : 'zh-CN';
+        speechSynthesis.speak(utterance);
+    });
+
+    // Right-click to search dictionary
+    card.addEventListener('contextmenu', e => {
+        e.preventDefault();
+        const query = encodeURIComponent(text);
+        window.open(`https://www.youdao.com/result?word=${query}`, '_blank');
+    });
+
+    lyricsContainer.appendChild(card);
+});
+</script>
+
+</body>
+</html>
