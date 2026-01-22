@@ -1,87 +1,21 @@
 <!DOCTYPE html>
 <html lang="zh">
-<!DOCTYPE html>
-<html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
-    <title> IGCSE Biology 学习歌</title>
+<title>生生不息 - IGCSE Biology 学习歌</title>
 
-    <!-- 浏览器渲染优化 -->
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="force-rendering" content="webkit">
-
-    <!-- iOS Web App 支持 -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="生生不息">
-    <link rel="apple-touch-icon" href="banner1.png">
-
-    <!-- 禁止手机自动识别电话、邮箱、地址 -->
-    <meta name="format-detection" content="telephone=no,email=no,address=no">
-
-    <!-- 安全策略，升级 HTTP 请求到 HTTPS -->
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
-    <!-- SEO -->
-    <meta name="description" content="生生不息 - IGCSE生物单词古风学习歌，教育学习网站，帮助学生记忆生物单词。">
-    <meta name="keywords" content="IGCSE, Biology, 生物单词, 学习歌, 古风, 教育网站">
-    <meta name="robots" content="index,follow">
-
-    <!-- 浏览器主题色 -->
-    <meta name="theme-color" content="#2a9d8f">
-
-    <!-- 网站类型声明，避免拦截，告诉手机/平板这是教育类网站 -->
-    <meta name="application-name" content="生生不息 - 教育学习网站">
-    <meta name="category" content="Education">
-
-    <style>
-        /* 防止移动端点击闪烁 */
-        body { -webkit-tap-highlight-color: transparent;
-        font-family: "Microsoft YaHei", Arial, sans-serif;
-        background-color: #f7f7f7;
-        margin: 0;
-        padding: 0;
-    }
-    header {
-        width: 100%;
-        height: 200px;
-        background: url('banner1.png') center/cover no-repeat;
-    }
-    .player {
-        text-align: center;
-        margin: 20px 0;
-    }
-    audio {
-        width: 90%;
-    }
-    .lyrics-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 12px;
-        padding: 20px;
-    }
-    .lyric-card {
-        background: #fff;
-        border-radius: 10px;
-        box-shadow: 0 3px 6px rgba(0,0,0,0.12);
-        padding: 12px 15px;
-        min-width: 200px;
-        cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
-        text-align: center;
-    }
-    .lyric-card:hover {
-        transform: scale(1.05);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-    }
-    .lyric-card b {
-        color: #2a9d8f;
-        font-weight: bold;
-    }
+<style>
+body { font-family:"Microsoft YaHei", Arial, sans-serif; background:#f7f7f7; margin:0; -webkit-tap-highlight-color: transparent; }
+header { width:100%; height:200px; background: url('banner1.png') center/cover no-repeat; }
+.player { text-align:center; margin:20px 0; }
+audio { width:90%; }
+.lyrics-container { display:flex; flex-wrap:wrap; justify-content:center; gap:12px; padding:20px; }
+.lyric-card { background:#fff; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.12); padding:12px 15px; min-width:200px; cursor:pointer; transition:transform 0.2s, box-shadow 0.2s; text-align:center; }
+.lyric-card:hover { transform:scale(1.05); box-shadow:0 6px 12px rgba(0,0,0,0.2); }
+.lyric-card b { color:#2a9d8f; display:block; margin:4px 0; font-weight:bold; }
+.song-lyrics { max-width:900px; margin:20px auto; background:#fff; border-radius:10px; padding:20px; box-shadow:0 3px 6px rgba(0,0,0,0.12); line-height:1.8; white-space:pre-wrap; }
 </style>
 </head>
 <body>
@@ -102,7 +36,7 @@ Your browser does not support the audio element.
 <div class="song-lyrics" id="songLyrics"></div>
 
 <script>
-// IGCSE 生物单词 + 中文
+// 中文 + 英文
 const wordPairs = [
 ["unicellular","单细胞"],
 ["metamorphosis","变化"],
@@ -143,43 +77,33 @@ const wordPairs = [
 // 生成卡片
 const container = document.getElementById('lyricsContainer');
 
-lyrics.forEach(word => {
+wordPairs.forEach(([eng, chi]) => {
     const card = document.createElement('div');
     card.className = 'lyric-card';
-    card.innerHTML = `<b>${word}</b>`;
+    card.innerHTML = `<b>${chi}</b><b>${eng}</b>`;
 
-    // 朗读函数
-    function speakText(text) {
-        if (speechSynthesis.speaking) {
-            speechSynthesis.cancel(); // 取消当前朗读，避免重叠
-        }
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = /[a-zA-Z]/.test(text) ? 'en-US' : 'zh-CN';
-        utterance.volume = 1;   // 音量
-        utterance.rate = 1;     // 语速
-        utterance.pitch = 1;    // 音调
-        speechSynthesis.speak(utterance);
+    function speakText() {
+        if (speechSynthesis.speaking) speechSynthesis.cancel();
+        const utterEng = new SpeechSynthesisUtterance(eng);
+        utterEng.lang = 'en-US';
+        const utterChi = new SpeechSynthesisUtterance(chi);
+        utterChi.lang = 'zh-CN';
+        speechSynthesis.speak(utterEng);
+        speechSynthesis.speak(utterChi);
     }
 
-    // 手机/平板兼容：click + touchend
-    card.addEventListener('click', () => speakText(word));
-    card.addEventListener('touchend', (e) => {
-        e.preventDefault(); // 阻止浏览器默认行为，避免双触发
-        speakText(word);
-    });
+    card.addEventListener('click', speakText);
+    card.addEventListener('touchend', e => { e.preventDefault(); speakText(); });
 
-    // 右键查有道
-    card.addEventListener('contextmenu', e => {
+    card.addEventListener('contextmenu', e=>{
         e.preventDefault();
-        const query = encodeURIComponent(word);
-        window.open(`https://www.youdao.com/result?word=${query}`, '_blank');
+        window.open(`https://www.youdao.com/result?word=${encodeURIComponent(eng)}`,'_blank');
     });
 
     container.appendChild(card);
 });
 
-
-// 歌词内容
+// 歌词显示
 const fullLyrics = `
 Yo! Let’s go, 生物派对开场
 单细胞, Unicellular, let’s flow
