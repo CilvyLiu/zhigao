@@ -142,22 +142,31 @@ const wordPairs = [
 
 // 生成卡片
 const container = document.getElementById('lyricsContainer');
-wordPairs.forEach(pair => {
-    const [english, chinese] = pair;
+
+lyrics.forEach(word => {
     const card = document.createElement('div');
     card.className = 'lyric-card';
-    card.innerHTML = `<b>${english}</b><b>${chinese}</b>`;
-    
-    // 点击朗读英文+中文
-    card.addEventListener('click', () => {
-        const utterance = new SpeechSynthesisUtterance(`${english}, ${chinese}`);
-        speechSynthesis.speak(utterance);
-    });
+    card.innerHTML = `<b>${word}</b>`;
 
-    // 右键查英文
+    // 朗读函数
+    function speakText(text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        // 简单判断英文或中文
+        utterance.lang = /[a-zA-Z]/.test(text) ? 'en-US' : 'zh-CN';
+        utterance.volume = 1;   // 音量
+        utterance.rate = 1;     // 语速
+        utterance.pitch = 1;    // 音调
+        speechSynthesis.speak(utterance);
+    }
+
+    // 手机/平板兼容：click + touchstart
+    card.addEventListener('click', () => speakText(word));
+    card.addEventListener('touchstart', () => speakText(word));
+
+    // 右键查有道
     card.addEventListener('contextmenu', e => {
         e.preventDefault();
-        const query = encodeURIComponent(english);
+        const query = encodeURIComponent(word);
         window.open(`https://www.youdao.com/result?word=${query}`, '_blank');
     });
 
