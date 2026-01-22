@@ -6,36 +6,16 @@
 
 <title>生生不息 - IGCSE Biology 古风学习歌</title>
 
-<meta name="renderer" content="webkit">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="force-rendering" content="webkit">
-
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="生生不息">
-<link rel="apple-touch-icon" href="banner2.png">
-
-<meta name="format-detection" content="telephone=no,email=no,address=no">
-<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-
-<meta name="description" content="生生不息 - IGCSE生物单词古风学习歌，教育学习网站，帮助学生记忆生物单词。">
-<meta name="keywords" content="IGCSE, Biology, 生物单词, 学习歌, 古风, 教育网站">
-<meta name="robots" content="index,follow">
-
-<meta name="theme-color" content="#2a9d8f">
-<meta name="application-name" content="生生不息 - 教育学习网站">
-<meta name="category" content="Education">
-
 <style>
-body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f7f7f7; margin:0; -webkit-tap-highlight-color: transparent;}
+body { font-family:"Microsoft YaHei", Arial, sans-serif; background:#f7f7f7; margin:0; -webkit-tap-highlight-color: transparent;}
 header { width:100%; height:200px; background: url('banner2.png') center/cover no-repeat;}
 .player { text-align:center; margin:20px 0;}
 audio { width:90%; }
 .lyrics-container { display:flex; flex-wrap:wrap; justify-content:center; gap:12px; padding:20px; }
 .lyric-card { background:#fff; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.12); padding:12px 15px; min-width:200px; cursor:pointer; transition:transform 0.2s, box-shadow 0.2s; text-align:center; }
 .lyric-card:hover { transform:scale(1.05); box-shadow:0 6px 12px rgba(0,0,0,0.2);}
-.lyric-card b { color:#2a9d8f; font-weight:bold; }
-.song-lyrics { max-width:900px; margin:20px auto; background:#fff; border-radius:10px; padding:20px; box-shadow:0 3px 6px rgba(0,0,0,0.12); line-height:1.8; }
+.lyric-card b { color:#2a9d8f; display:block; margin:4px 0;}
+.song-lyrics { max-width:900px; margin:20px auto; background:#fff; border-radius:10px; padding:20px; box-shadow:0 3px 6px rgba(0,0,0,0.12); line-height:1.8; white-space:pre-wrap;}
 </style>
 </head>
 <body>
@@ -44,7 +24,7 @@ audio { width:90%; }
 
 <div class="player">
     <audio controls>
-        <source src="biology2.mp3" type="audio/mpeg">
+        <source src="biology.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 </div>
@@ -56,77 +36,72 @@ audio { width:90%; }
 <div class="song-lyrics" id="songLyrics"></div>
 
 <script>
-// 单词列表
-const lyrics = [
-"生物","Organism",
-"运动","Movement",
-"呼吸","Respiration",
-"新陈代谢","Metabolism",
-"敏感性","Sensitivity",
-"生长","Growth",
-"干重","Dry mass",
-"繁殖","Reproduction",
-"排泄","Excretion",
-"营养作用","Nutrition",
-"共同祖先","Common ancestor",
-"物种","Species",
-"可育的","Fertile",
-"不可育的","Infertile",
-"双名法","Binomial system",
-"属","Genus",
-"二分法","Dichotomous key",
-"界","Kingdom",
-"有机物","Organic substances",
-"叶绿素","Chlorophyll",
-"纤维素","Cellulose",
-"真菌","Fungus",
-"原核生物","Prokaryote",
-"原生生物","Protoctist",
-"菌丝","Hyphae",
-"分解者","Decomposer",
-"孢子","Spores",
-"多细胞","Multicellular"
+// 单词列表，中文+英文
+const words = [
+["生物","Organism"],
+["运动","Movement"],
+["呼吸","Respiration"],
+["新陈代谢","Metabolism"],
+["敏感性","Sensitivity"],
+["生长","Growth"],
+["干重","Dry mass"],
+["繁殖","Reproduction"],
+["排泄","Excretion"],
+["营养作用","Nutrition"],
+["共同祖先","Common ancestor"],
+["物种","Species"],
+["可育的","Fertile"],
+["不可育的","Infertile"],
+["双名法","Binomial system"],
+["属","Genus"],
+["二分法","Dichotomous key"],
+["界","Kingdom"],
+["有机物","Organic substances"],
+["叶绿素","Chlorophyll"],
+["纤维素","Cellulose"],
+["真菌","Fungus"],
+["原核生物","Prokaryote"],
+["原生生物","Protoctist"],
+["菌丝","Hyphae"],
+["分解者","Decomposer"],
+["孢子","Spores"],
+["多细胞","Multicellular"]
 ];
 
 // 生成卡片
 const container = document.getElementById('lyricsContainer');
 
-lyrics.forEach(word => {
+words.forEach(pair => {
+    const [chinese, english] = pair;
     const card = document.createElement('div');
     card.className = 'lyric-card';
-    card.innerHTML = `<b>${word}</b>`;
+    card.innerHTML = `<b>${chinese}</b><b>${english}</b>`;
 
-    // 朗读函数
-    function speakText(text) {
-        if (speechSynthesis.speaking) {
-            speechSynthesis.cancel(); // 取消当前朗读，避免重叠
-        }
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = /[a-zA-Z]/.test(text) ? 'en-US' : 'zh-CN';
-        utterance.volume = 1;   // 音量
-        utterance.rate = 1;     // 语速
-        utterance.pitch = 1;    // 音调
-        speechSynthesis.speak(utterance);
+    function speakText() {
+        if (speechSynthesis.speaking) speechSynthesis.cancel();
+        // 先读英文，再读中文
+        const utterEng = new SpeechSynthesisUtterance(english);
+        utterEng.lang = 'en-US';
+        const utterCh = new SpeechSynthesisUtterance(chinese);
+        utterCh.lang = 'zh-CN';
+        speechSynthesis.speak(utterEng);
+        speechSynthesis.speak(utterCh);
     }
 
-    // 手机/平板兼容：click + touchend
-    card.addEventListener('click', () => speakText(word));
-    card.addEventListener('touchend', (e) => {
-        e.preventDefault(); // 阻止浏览器默认行为，避免双触发
-        speakText(word);
-    });
+    // 电脑 + 手机兼容
+    card.addEventListener('click', speakText);
+    card.addEventListener('touchend', (e)=>{ e.preventDefault(); speakText(); });
 
     // 右键查有道
-    card.addEventListener('contextmenu', e => {
+    card.addEventListener('contextmenu', e=>{
         e.preventDefault();
-        const query = encodeURIComponent(word);
-        window.open(`https://www.youdao.com/result?word=${query}`, '_blank');
+        window.open(`https://www.youdao.com/result?word=${encodeURIComponent(english)}`,'_blank');
     });
 
     container.appendChild(card);
 });
 
-// 完整歌词
+// 歌词区
 const fullLyrics = `
 生物, Organism, 世间万象生
 运动, Movement, 风起云涌行
@@ -163,7 +138,6 @@ const fullLyrics = `
 孢子, Spores, 风吹随处去
 多细胞, Multicellular, 众生聚一统
 `;
-
 document.getElementById('songLyrics').innerText = fullLyrics;
 </script>
 
