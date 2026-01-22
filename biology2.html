@@ -1,20 +1,54 @@
 <!DOCTYPE html>
 <html lang="zh">
+<!DOCTYPE html>
+<html lang="zh">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IGCSE Biology Song</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f0f2f5;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+    <title> IGCSE Biology 学习歌</title>
+
+    <!-- 浏览器渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="force-rendering" content="webkit">
+
+    <!-- iOS Web App 支持 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="生生不息">
+    <link rel="apple-touch-icon" href="banner1.jpg">
+
+    <!-- 禁止手机自动识别电话、邮箱、地址 -->
+    <meta name="format-detection" content="telephone=no,email=no,address=no">
+
+    <!-- 安全策略，升级 HTTP 请求到 HTTPS -->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+    <!-- SEO -->
+    <meta name="description" content="生生不息 - IGCSE生物单词古风学习歌，教育学习网站，帮助学生记忆生物单词。">
+    <meta name="keywords" content="IGCSE, Biology, 生物单词, 学习歌, 古风, 教育网站">
+    <meta name="robots" content="index,follow">
+
+    <!-- 浏览器主题色 -->
+    <meta name="theme-color" content="#2a9d8f">
+
+    <!-- 网站类型声明，避免拦截，告诉手机/平板这是教育类网站 -->
+    <meta name="application-name" content="生生不息 - 教育学习网站">
+    <meta name="category" content="Education">
+
+    <style>
+        /* 防止移动端点击闪烁 */
+        body { -webkit-tap-highlight-color: transparent;
+        font-family: "Microsoft YaHei", Arial, sans-serif;
+        background-color: #f7f7f7;
         margin: 0;
         padding: 0;
     }
     header {
         width: 100%;
         height: 200px;
-        background: url('banner1.png') center/cover no-repeat;
+        background: url('banner2.png') center/cover no-repeat;
     }
     .player {
         text-align: center;
@@ -27,17 +61,18 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 15px;
+        gap: 12px;
         padding: 20px;
     }
     .lyric-card {
         background: #fff;
         border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        padding: 15px 20px;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.12);
+        padding: 12px 15px;
         min-width: 200px;
         cursor: pointer;
-        transition: transform 0.2s;
+        transition: transform 0.2s, box-shadow 0.2s;
+        text-align: center;
     }
     .lyric-card:hover {
         transform: scale(1.05);
@@ -45,23 +80,7 @@
     }
     .lyric-card b {
         color: #2a9d8f;
-    }
-    .controls {
-        margin-top: 10px;
-        display: flex;
-        justify-content: space-between;
-    }
-    .control-btn {
-        background: #264653;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 14px;
-    }
-    .control-btn:hover {
-        background: #1b2d3b;
+        font-weight: bold;
     }
 </style>
 </head>
