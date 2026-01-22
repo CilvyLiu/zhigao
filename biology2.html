@@ -89,80 +89,115 @@
 <header></header>
 
 <div class="player">
-    <audio controls>
-        <source src="biology2.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+<audio controls>
+<source src="biology2.mp3" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
 </div>
 
-<div class="lyrics-container" id="lyricsContainer">
-    <!-- Lyrics cards will be generated here -->
-</div>
+<h2 style="text-align:center;">单词学习卡片</h2>
+<div class="lyrics-container" id="lyricsContainer"></div>
+
+<h2 style="text-align:center; margin-top:40px;">完整歌词</h2>
+<div class="song-lyrics" id="songLyrics"></div>
 
 <script>
-const lyrics = [
-    "Yo! Let’s go", "生物派对开场", 
-    "单细胞", "Unicellular", 
-    "变化 show", "Metamorphosis", 
-    "耳廓 listen", "Pinna", 
-    "Placenta", "胎盘", 
-    "Mammary glands", "乳腺",
-    "横膈膜", "Diaphragm", 
-    "节肢动物", "Arthropod", 
-    "外骨骼", "Exoskeleton", 
-    "陆生", "Terrestrial", 
-    "水生", "Aquatic",
-    "退化", "Vestigial",
-    "双子叶", "Dicotyledons",
-    "单子叶", "Monocotyledons",
-    "细胞膜", "Cell membrane",
-    "半透", "Partially permeable",
-    "细胞壁", "Cell wall",
-    "全透", "Fully permeable",
-    "细胞质", "Cytoplasm",
-    "代谢反应", "Metabolic reactions",
-    "液泡", "Vacuole",
-    "细胞液", "Cell sap",
-    "小泡", "Vesicle",
-    "细胞核", "Nucleus",
-    "染色体", "Chromosome",
-    "DNA", "脱氧核糖核酸",
-    "叶绿体", "Chloroplast",
-    "淀粉粒", "Starch grains",
-    "线粒体", "Mitochondrion",
-    "有氧呼吸", "Aerobic respiration",
-    "核糖体", "Ribosome",
-    "细菌", "Bacteria",
-    "原核细胞", "Prokaryotic cell",
-    "质粒", "Plasmid",
-    "组织", "Tissue"
+// 单词+中文
+const wordPairs = [
+["Organism", "生物"],
+["Movement", "运动"],
+["Respiration", "呼吸"],
+["Metabolism", "新陈代谢"],
+["Sensitivity", "敏感性"],
+["Growth", "生长"],
+["Dry mass", "干重"],
+["Reproduction", "繁殖"],
+["Excretion", "排泄"],
+["Nutrition", "营养作用"],
+["Common ancestor", "共同祖先"],
+["Species", "物种"],
+["Fertile", "可育的"],
+["Infertile", "不可育的"],
+["Binomial system", "双名法"],
+["Genus", "属"],
+["Dichotomous key", "二分法"],
+["Kingdom", "界"],
+["Organic substances", "有机物"],
+["Chlorophyll", "叶绿素"],
+["Cellulose", "纤维素"],
+["Fungus", "真菌"],
+["Prokaryote", "原核生物"],
+["Protoctist", "原生生物"],
+["Hyphae", "菌丝"],
+["Decomposer", "分解者"],
+["Spores", "孢子"],
+["Multicellular", "多细胞"]
 ];
 
-// Function to create lyric cards
-const lyricsContainer = document.getElementById('lyricsContainer');
-
-lyrics.forEach(text => {
+// 生成卡片
+const container = document.getElementById('lyricsContainer');
+wordPairs.forEach(pair => {
+    const [english, chinese] = pair;
     const card = document.createElement('div');
     card.className = 'lyric-card';
-    card.innerHTML = `<b>${text}</b>`;
+    card.innerHTML = `<b>${english}</b><b>${chinese}</b>`;
     
-    // Click to TTS
+    // 点击朗读英文+中文
     card.addEventListener('click', () => {
-        const utterance = new SpeechSynthesisUtterance(text);
-        // detect language: simple check
-        utterance.lang = /[a-zA-Z]/.test(text) ? 'en-US' : 'zh-CN';
+        const utterance = new SpeechSynthesisUtterance(`${english}, ${chinese}`);
+        utterance.lang = 'en-US';
         speechSynthesis.speak(utterance);
     });
 
-    // Right-click to search dictionary
+    // 右键查英文
     card.addEventListener('contextmenu', e => {
         e.preventDefault();
-        const query = encodeURIComponent(text);
+        const query = encodeURIComponent(english);
         window.open(`https://www.youdao.com/result?word=${query}`, '_blank');
     });
 
-    lyricsContainer.appendChild(card);
+    container.appendChild(card);
 });
+
+// 完整歌词，生生不息格式
+const fullLyrics = `
+生物, Organism, 世间万象生
+运动, Movement, 风起云涌行
+呼吸, Respiration, 气息悠长韵
+新陈代谢, Metabolism, 山河岁月新
+
+敏感性, Sensitivity, 风声细微听
+生长, Growth, 花开千重影
+干重, Dry mass, 枝叶沉沉静
+繁殖, Reproduction, 春去又复生
+
+排泄, Excretion, 江水东流去
+营养作用, Nutrition, 山川润万物
+共同祖先, Common ancestor, 溯源追古意
+物种, Species, 世代传不息
+
+可育的, Fertile, 土壤滋养春
+不可育的, Infertile, 荒野孤云沉
+双名法, Binomial system, 名定天地间
+属, Genus, 分类如棋盘
+
+二分法, Dichotomous key, 分明如水石
+界, Kingdom, 山川草木齐
+有机物, Organic substances, 生机蕴万物
+叶绿素, Chlorophyll, 青翠染林木
+
+纤维素, Cellulose, 枝叶坚韧立
+真菌, Fungus, 山林幽暗里
+原核生物, Prokaryote, 微生世界微
+原生生物, Protoctist, 水影轻轻移
+
+菌丝, Hyphae, 缠绕土壤中
+分解者, Decomposer, 落叶化春风
+孢子, Spores, 风吹随处去
+多细胞, Multicellular, 众生聚一统
+`;
+
+document.getElementById('songLyrics').innerText = fullLyrics;
 </script>
 
 </body>
