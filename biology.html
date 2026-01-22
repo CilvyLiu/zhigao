@@ -98,8 +98,10 @@ lyrics.forEach(word => {
 
     // 朗读函数
     function speakText(text) {
+        if (speechSynthesis.speaking) {
+            speechSynthesis.cancel(); // 取消当前朗读，避免重叠
+        }
         const utterance = new SpeechSynthesisUtterance(text);
-        // 简单判断英文或中文
         utterance.lang = /[a-zA-Z]/.test(text) ? 'en-US' : 'zh-CN';
         utterance.volume = 1;   // 音量
         utterance.rate = 1;     // 语速
@@ -107,9 +109,12 @@ lyrics.forEach(word => {
         speechSynthesis.speak(utterance);
     }
 
-    // 手机/平板兼容：click + touchstart
+    // 手机/平板兼容：click + touchend
     card.addEventListener('click', () => speakText(word));
-    card.addEventListener('touchstart', () => speakText(word));
+    card.addEventListener('touchend', (e) => {
+        e.preventDefault(); // 阻止浏览器默认行为，避免双触发
+        speakText(word);
+    });
 
     // 右键查有道
     card.addEventListener('contextmenu', e => {
@@ -120,7 +125,6 @@ lyrics.forEach(word => {
 
     container.appendChild(card);
 });
-
 
 // 完整歌词
 const fullLyrics = `
