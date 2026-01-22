@@ -78,14 +78,28 @@ words.forEach(pair => {
     card.innerHTML = `<b>${chinese}</b><b>${english}</b>`;
 
     function speakText() {
-        if (speechSynthesis.speaking) speechSynthesis.cancel();
-        // 先读英文，再读中文
+        if (speechSynthesis.speaking) {
+            speechSynthesis.cancel(); // 取消当前朗读，避免重叠
+        }
+
         const utterEng = new SpeechSynthesisUtterance(english);
         utterEng.lang = 'en-US';
+        utterEng.volume = 1;
+        utterEng.rate = 1;
+        utterEng.pitch = 1;
+
         const utterCh = new SpeechSynthesisUtterance(chinese);
         utterCh.lang = 'zh-CN';
+        utterCh.volume = 1;
+        utterCh.rate = 1;
+        utterCh.pitch = 1;
+
+        // 英文读完再读中文
+        utterEng.onend = () => {
+            speechSynthesis.speak(utterCh);
+        };
+
         speechSynthesis.speak(utterEng);
-        speechSynthesis.speak(utterCh);
     }
 
     // 电脑 + 手机兼容
