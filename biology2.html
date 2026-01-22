@@ -77,31 +77,50 @@ const wordPairs = [
 // 生成卡片
 const container = document.getElementById('lyricsContainer');
 
-wordPairs.forEach(([eng, chi]) => {
+words.forEach(pair => {
+    const [chinese, english] = pair;
     const card = document.createElement('div');
     card.className = 'lyric-card';
-    card.innerHTML = `<b>${chi}</b><b>${eng}</b>`;
+    card.innerHTML = `<b>${chinese}</b><b>${english}</b>`;
 
     function speakText() {
-        if (speechSynthesis.speaking) speechSynthesis.cancel();
-        const utterEng = new SpeechSynthesisUtterance(eng);
+        if (speechSynthesis.speaking) {
+            speechSynthesis.cancel(); // 取消当前朗读，避免重叠
+        }
+
+        const utterEng = new SpeechSynthesisUtterance(english);
         utterEng.lang = 'en-US';
-        const utterChi = new SpeechSynthesisUtterance(chi);
-        utterChi.lang = 'zh-CN';
+        utterEng.volume = 1;
+        utterEng.rate = 1;
+        utterEng.pitch = 1;
+
+        const utterCh = new SpeechSynthesisUtterance(chinese);
+        utterCh.lang = 'zh-CN';
+        utterCh.volume = 1;
+        utterCh.rate = 1;
+        utterCh.pitch = 1;
+
+        // 英文读完再读中文
+        utterEng.onend = () => {
+            speechSynthesis.speak(utterCh);
+        };
+
         speechSynthesis.speak(utterEng);
-        speechSynthesis.speak(utterChi);
     }
 
+    // 电脑 + 手机兼容
     card.addEventListener('click', speakText);
-    card.addEventListener('touchend', e => { e.preventDefault(); speakText(); });
+    card.addEventListener('touchend', (e)=>{ e.preventDefault(); speakText(); });
 
+    // 右键查有道
     card.addEventListener('contextmenu', e=>{
         e.preventDefault();
-        window.open(`https://www.youdao.com/result?word=${encodeURIComponent(eng)}`,'_blank');
+        window.open(`https://www.youdao.com/result?word=${encodeURIComponent(english)}`,'_blank');
     });
 
     container.appendChild(card);
 });
+
 
 // 歌词显示
 const fullLyrics = `
