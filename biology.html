@@ -90,22 +90,37 @@ const lyrics = [
 
 // 生成卡片
 const container = document.getElementById('lyricsContainer');
+
 lyrics.forEach(word => {
     const card = document.createElement('div');
     card.className = 'lyric-card';
     card.innerHTML = `<b>${word}</b>`;
-    card.addEventListener('click', () => {
-        const utterance = new SpeechSynthesisUtterance(word);
-        utterance.lang = /[a-zA-Z]/.test(word) ? 'en-US' : 'zh-CN';
+
+    // 朗读函数
+    function speakText(text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        // 简单判断英文或中文
+        utterance.lang = /[a-zA-Z]/.test(text) ? 'en-US' : 'zh-CN';
+        utterance.volume = 1;   // 音量
+        utterance.rate = 1;     // 语速
+        utterance.pitch = 1;    // 音调
         speechSynthesis.speak(utterance);
-    });
+    }
+
+    // 手机/平板兼容：click + touchstart
+    card.addEventListener('click', () => speakText(word));
+    card.addEventListener('touchstart', () => speakText(word));
+
+    // 右键查有道
     card.addEventListener('contextmenu', e => {
         e.preventDefault();
         const query = encodeURIComponent(word);
         window.open(`https://www.youdao.com/result?word=${query}`, '_blank');
     });
+
     container.appendChild(card);
 });
+
 
 // 完整歌词
 const fullLyrics = `
