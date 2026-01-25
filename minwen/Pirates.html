@@ -1,3 +1,12 @@
+
+29
+30
+31
+32
+33
+34
+35
+36
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -34,97 +43,4 @@ Your browser does not support the audio element.
 <h2>单词学习卡片</h2>
 <div class="lyrics-container" id="lyricsContainer"></div>
 
-<h2>完整歌词</h2>
-<div class="song-lyrics" id="songLyrics"></div>
-
-<script>
-// 单词对：英文 + 中文
-const words = [
-["federation","联邦"], ["voting","选举"], ["adult","成年人"], ["effectiveness","有效"], 
-["representative","代表人"], ["freedom","自由"], ["religion","信仰"], ["conservative","保守的"], 
-["liberal","自由主义者"], ["state","国家"], ["candidate","候选人"], ["profession","职业"], 
-["policy","政策"], ["running","运营"], ["federal","联邦的"], ["democratic","民主的"], 
-["political","政治的"], ["several","多个"], ["national","国家的"], ["facility","设施"], 
-["gallery","画廊"], ["stadium","体育场"], ["dealing","打交道"], ["governing","统治的"], 
-["ruling","掌权的"], ["automatic","自动的"], ["opposing","反对的"], ["demonstrate","展示"], 
-["occur","发生"], ["commence","开始"], ["defeat","击败"], ["please","使高兴"], 
-["debate","辩论"], ["manage","管理"], ["freely","自由地"], ["automatically","自动地"], 
-["general election","大选"], ["different walks of life","各行各业"], ["voting right","举权"], 
-["city council","市政府"]
-];
-
-// 生成卡片
-const container = document.getElementById('lyricsContainer');
-words.forEach(pair=>{
-    const [english, chinese] = pair;
-    const card = document.createElement('div');
-    card.className = 'lyric-card';
-    card.innerHTML = `<b>${english}</b><b>${chinese}</b>`;
-
-    function speakText() {
-        if(speechSynthesis.speaking) speechSynthesis.cancel();
-        const utterEng = new SpeechSynthesisUtterance(english);
-        utterEng.lang = 'en-US';
-        const utterCh = new SpeechSynthesisUtterance(chinese);
-        utterCh.lang = 'zh-CN';
-        utterEng.onend = ()=>speechSynthesis.speak(utterCh);
-        speechSynthesis.speak(utterEng);
-        // 点击动画
-        card.style.transform = "scale(1.2)";
-        setTimeout(()=>{ card.style.transform="scale(1.1)"; }, 200);
-    }
-
-    card.addEventListener('click', speakText);
-    card.addEventListener('touchend', e=>{ e.preventDefault(); speakText(); });
-
-    card.addEventListener('contextmenu', e=>{
-        e.preventDefault();
-        window.open(`https://www.youdao.com/result?word=${encodeURIComponent(english)}`,'_blank');
-    });
-
-    container.appendChild(card);
-});
-
-// 歌词内容，可点击朗读
-const lyricsText = `
-风起云涌在人间 Federation 联邦立中天
-Voting 选举定江山 Adult 成年各有言
-Effectiveness 论成败 Representative 代民传
-Freedom 自由心不改 Religion 信仰各随缘
-天下一声投——嗨！ State 国家在眼前
-Conservative 守旧道 Liberal 自由破旧篇
-天下一声投——笑！ Democratic 民意宣 Political 风云起
-National 山河连 Candidate 候选登台 Profession 各展所长
-Policy 政策如剑 Running 奔走四方 Federal 联邦如网
-Several 多元共商 Governing 执掌方向 Ruling 掌权定章
-天下一声投——嗨！ Opposing 反对亦刚 Debate 辩论如剑影
-Demonstrate 立场亮 天下一声投——笑！ Voting right 在手上
-Different walks of life 同台论短长 Facility 百姓所用 Gallery 思想流光
-Stadium 人心汇聚 Dealing 世事无常 Occur 风云突变 Commence 新局开场
-Defeat 胜败一瞬 Please 民心为王 天下一声投——嗨！
-Manage 治理有方 Freely 自由而立 Automatically 运转长
-General election 定乾坤 City council 在地方 江湖不是刀与剑
-而是制度与主张
-`;
-
-// 将歌词拆分成词，生成可点击span
-const lyricsContainer = document.getElementById('songLyrics');
-lyricsText.trim().split(/\s+/).forEach(word=>{
-    const span = document.createElement('span');
-    span.innerText = word + " ";
-    span.addEventListener('click', ()=>{
-        if(speechSynthesis.speaking) speechSynthesis.cancel();
-        const utter = new SpeechSynthesisUtterance(word);
-        // 简单判断英文或中文
-        utter.lang = /[a-zA-Z]/.test(word) ? 'en-US' : 'zh-CN';
-        speechSynthesis.speak(utter);
-        // 点击动画
-        span.style.transform="scale(1.2)";
-        setTimeout(()=>{span.style.transform="scale(1)";},200);
-    });
-    lyricsContainer.appendChild(span);
-});
-</script>
-
-</body>
-</html>
+Use 
